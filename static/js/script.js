@@ -1,81 +1,80 @@
-const contactForm = document.getElementById("contact-form");
+// Wait until the webpage is completely loaded
+document.addEventListener("DOMContentLoaded", function () {
 
-const formMessage = document.getElementById("form-message");
+    // Mobile navigation
+    const navLinks = document.querySelectorAll(".nav-links a");
 
-
-contactForm.addEventListener("submit", async function (event) {
-
-    event.preventDefault();
-
-
-    const name = document.getElementById("name").value.trim();
-
-    const email = document.getElementById("email").value.trim();
-
-    const message = document.getElementById("message").value.trim();
+    navLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+            console.log("Navigation clicked:", link.textContent);
+        });
+    });
 
 
-    if (!name || !email || !message) {
+    // Contact form validation
+    const contactForm = document.querySelector("#contact form");
 
-        formMessage.textContent =
-            "Please fill in all fields.";
+    if (contactForm) {
 
-        return;
+        contactForm.addEventListener("submit", function (event) {
+
+            const name = document.querySelector(
+                'input[name="name"]'
+            ).value.trim();
+
+            const email = document.querySelector(
+                'input[name="email"]'
+            ).value.trim();
+
+            const message = document.querySelector(
+                'textarea[name="message"]'
+            ).value.trim();
+
+
+            // Check name
+            if (name.length < 2) {
+                event.preventDefault();
+
+                alert("Please enter your valid name.");
+
+                return;
+            }
+
+
+            // Check email
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(email)) {
+                event.preventDefault();
+
+                alert("Please enter a valid email address.");
+
+                return;
+            }
+
+
+            // Check message
+            if (message.length < 5) {
+                event.preventDefault();
+
+                alert("Please enter a message.");
+
+                return;
+            }
+
+            // Form is valid
+            console.log("Contact form submitted successfully.");
+
+        });
     }
 
 
-    formMessage.textContent =
-        "Sending message...";
+    // Current year in footer
+    const yearElement = document.querySelector("#current-year");
 
-
-    try {
-
-        const response = await fetch("/contact", {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                name: name,
-
-                email: email,
-
-                message: message
-
-            })
-
-        });
-
-
-        const data = await response.json();
-
-
-        if (data.success) {
-
-            formMessage.textContent =
-                data.message;
-
-            contactForm.reset();
-
-        } else {
-
-            formMessage.textContent =
-                data.message;
-
-        }
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        formMessage.textContent =
-            "Something went wrong. Please try again.";
-
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
     }
 
 });
