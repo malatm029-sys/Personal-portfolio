@@ -54,15 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            // Check message
-            if (message.length < 5) {
-                event.preventDefault();
-
-                alert("Please enter a message.");
-
-                return;
-            }
-
             // Form is valid
             console.log("Contact form submitted successfully.");
 

@@ -30,19 +30,14 @@ def home():
 
 @app.route("/contact", methods=["POST"])
 def contact():
-    name = request.form["name"]
-    email = request.form["email"]
-    message = request.form["message"]
+    name = request.form.get("name")
+    email = request.form.get("email")
+    message = request.form.get("message")
 
-    cursor = db.cursor()
-
-    cursor.execute(
-        "INSERT INTO contact_messages (name, email, message) VALUES (%s, %s, %s)",
-        (name, email, message)
-    )
-
-    db.commit()
-    cursor.close()
+    print("New Contact Message")
+    print("Name:", name)
+    print("Email:", email)
+    print("Message:", message)
 
     return """
     <script>
@@ -53,4 +48,4 @@ def contact():
 
 
 if __name__ == "__main__":
-   app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
